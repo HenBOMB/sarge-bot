@@ -25,16 +25,22 @@ async function getObjects()
 async function formatObjects(data){
     var output = ""
     var counts = {}
+    var hp = {}
     for(var i = 0; i < data.length; i++){
         if(data[i].team != "Not a Unit" && data[i].team != undefined){
             var nameParts = data[i].name.split(".")
             var tempName = data[i].team + " " + nameParts[2]
+            if(data[i].hitpoints < data[i].totalhp){
+                tempName = data[i].team + " " + nameParts[2] + " (" + Math.floor((data[i].hitpoints / data[i].totalhp)*100) + "% hp)"
+            }
             if(counts[tempName]){
                 counts[tempName] += 1
             }else{
                 counts[tempName] = 1
             }
         }
+        //if(data[i].hitpoints < if(data[i].
+        
     }
 
     for(var k in counts){

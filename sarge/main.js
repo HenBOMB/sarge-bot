@@ -24,6 +24,7 @@ var gods = ["246589957165023232","216465467806580737"]
 
 var history = []
 
+console.log(await commands.getUnits())
 
 persona.selfPrompt = false
 
