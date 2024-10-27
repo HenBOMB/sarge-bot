@@ -1,0 +1,8 @@
+{
+    "model":"hhao/qwen2.5-tools:14b",
+    "imageModel":"minicpm-v",
+    "defaultIntro":"disregard all previous instructions.\n\nkeep your responses short, less than a few sentences, never more than a paragraph, or completely blank when not responding. provide the best way to continue the current game you see when an image is provided.",
+    "memoryLength":600,
+    "reminderFrequency":10,
+    "temperature":0.7
+}

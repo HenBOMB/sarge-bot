@@ -1,0 +1,21 @@
+{
+  "name": "uno",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --max-old-space-size=4076 main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "curl": "^0.1.4",
+    "discord.js": "^14.16.2",
+    "node-global-key-listener": "^0.3.0",
+    "ollama": "^0.5.9",
+    "prompt-sync": "^4.2.0",
+    "prompts": "^2.4.2"
+  }
+}
