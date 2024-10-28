@@ -149,7 +149,7 @@ export function getCommandData(){
 
 
     "sendMessage": {
-        "description":"Sends a message in chat.",
+        "description":"Sends a message in chat, your enemies can see them.",
         "args":"message"
     },
 
@@ -203,17 +203,50 @@ export async function getTowers(){
     return defer(() => output)
 }
 
+function breakMessage(str) {
+    var blockSize = 182
+    if(str.length < blockSize){
+        return [str]
+    }
+    let result = [];
+    for (let i = 0; i < str.length; i += blockSize) {
+        result.push(str.slice(i, i + blockSize));
+    }
+    return result;
+}
+
 export async function sendMessage(message){
 
     try
     {
-        const response = await fetch(`http://127.0.0.1:8080/SendMessage?msg=${encodeURIComponent(message)}`);
-        var data = await response.json();
-        return "message sent."
+        if(!(message.constructor === Array)){
+            var parts = breakMessage(message)
+            for (let i = 0; i < parts.length; i++) {
+                const response = await fetch(`http://127.0.0.1:8080/SendMessage?msg=${(parts[i])}`);
+                var data = await response.json();
+                console.log("sending: "+parts[i])
+            }
+            return "message sent."
+        }else{
+            var temp = ""
+            for(var j = 0; j < message.length; j++){
+                temp += message[j] + " "
+            }
+
+            var parts = breakMessage(temp)
+            for (let i = 0; i < parts.length; i++) {
+                const response = await fetch(`http://127.0.0.1:8080/SendMessage?msg=${(parts[i])}`);
+                var data = await response.json();
+                console.log("sending: "+parts[i])
+            }
+
+            return "message sent."
+        }
     }
     catch (error)
     {
-        
+        if((error + "").includes("Unexpected end of JSON input"))
+            return "You can't send a message to your enemy during this battle."
         console.log(error);
         return "message failed to send: "+error
     }
