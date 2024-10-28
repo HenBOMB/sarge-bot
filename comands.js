@@ -57,6 +57,14 @@ export function getCommandData(){
         "description":"Gets a list of all units.",
         "args":""
     },
+
+
+    "sendMessage": {
+        "description":"Sends a message in chat.",
+        "args":"message"
+    },
+
+    /*
     "getResources": {
         "description":"Gets your current plastic and electricity.",
         "args":""
@@ -68,7 +76,8 @@ export function getCommandData(){
     "buildBuilding": {
         "description":"Places a blueprint for a building that your bulldozer will build.",
         "args":"buildingType, x, y"
-    }}
+    }*/
+    }
     return temp
 }
 
@@ -81,5 +90,23 @@ export async function getUnits(){
         })
     })
     return defer(() => output)
+}
+
+export async function sendMessage(message){
+
+    try
+    {
+        const response = await fetch(`http://127.0.0.1:8080/SendMessage?msg=${encodeURIComponent(message)}`);
+        var data = await response.json();
+        return "message sent."
+    }
+    catch (error)
+    {
+        
+        console.log(error);
+        return "message failed to send: "+error
+    }
+
+    
 }
 

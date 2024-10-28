@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { padding: 20px; font-family: Arial, sans-serif; }
+        button { margin: 5px; padding: 8px 15px; }
+        #messageInput { padding: 5px; width: 200px; margin-right: 5px; }
+        #output { 
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h2>API Test Interface</h2>
+    
+    <div>
+        <button onclick="getObjects()">Get Objects</button>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <input type="text" id="messageInput" placeholder="Enter message">
+        <button onclick="sendMessage()">Send Message</button>
+    </div>
+
+    <pre id="output">Response will appear here...</pre>
+
+    <script>
+        async function getObjects()
+        {
+            try
+            {
+                const response = await fetch('http://127.0.0.1:8080/GetObjects');
+                const data = await response.json();
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            }
+            catch (error)
+            {
+                document.getElementById('output').textContent = 'Error: ' + error;
+            }
+        }
+
+        async function sendMessage()
+        {
+            try
+            {
+                const message = document.getElementById('messageInput').value;
+                const encodedMessage = encodeURIComponent(message);
+                const response = await fetch(`http://127.0.0.1:8080/SendMessage?msg=${encodedMessage}`);
+                const data = await response.json();
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            }
+            catch (error)
+            {
+                document.getElementById('output').textContent = 'Error: ' + error;
+            }
+        }
+
+        document.getElementById('messageInput').addEventListener('keypress', function(e)
+        {
+            if (e.key === 'Enter')
+            {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
