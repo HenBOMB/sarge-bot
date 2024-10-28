@@ -22,21 +22,23 @@ async function getObjects()
     return data
 }
 
-async function formatObjects(data){
+async function formatUnits(data){
     var output = ""
     var counts = {}
     var hp = {}
     for(var i = 0; i < data.length; i++){
         if(data[i].team != "Not a Unit" && data[i].team != undefined){
             var nameParts = data[i].name.split(".")
-            var tempName = data[i].team + " " + nameParts[2]
-            if(data[i].hitpoints < data[i].totalhp){
-                tempName = data[i].team + " " + nameParts[2] + " (" + Math.floor((data[i].hitpoints / data[i].totalhp)*100) + "% hp)"
-            }
-            if(counts[tempName]){
-                counts[tempName] += 1
-            }else{
-                counts[tempName] = 1
+            if(nameParts[1] == "unit"){
+                var tempName = data[i].team + " " + nameParts[2]
+                if(data[i].hitpoints < data[i].totalhp){
+                    tempName = data[i].team + " " + nameParts[2] + " (" + Math.floor((data[i].hitpoints / data[i].totalhp)*100) + "% hp)"
+                }
+                if(counts[tempName]){
+                    counts[tempName] += 1
+                }else{
+                    counts[tempName] = 1
+                }
             }
         }
         //if(data[i].hitpoints < if(data[i].
@@ -51,10 +53,97 @@ async function formatObjects(data){
 
 }
 
+var buildingTypes = [
+    "garage","barraks","hq","depot"
+]
+
+function isBuilding(str){
+    for(var i = 0; i < buildingTypes.length; i++){
+        if(str.includes(buildingTypes[i])){
+            return true
+        }
+    }
+
+    return false
+}
+
+async function formatBuildings(data){
+    var output = ""
+    var counts = {}
+    var hp = {}
+    for(var i = 0; i < data.length; i++){
+        if(data[i].team != "Not a Unit" && data[i].team != undefined){
+            var nameParts = data[i].name.split(".")
+            var tempName = data[i].team + " " + nameParts[2]
+            if(nameParts[1] == "building" && isBuilding(nameParts[2])){
+                var tempName = data[i].team + " " + nameParts[2]+" id: "+data[i].id
+                if(data[i].hitpoints < data[i].totalhp){
+                    tempName = data[i].team + " " + nameParts[2] + " (" + Math.floor((data[i].hitpoints / data[i].totalhp)*100) + "% hp)"
+                }
+                if(counts[tempName]){
+                    counts[tempName] += 1
+                }else{
+                    counts[tempName] = 1
+                }
+            }
+        }
+        //if(data[i].hitpoints < if(data[i].
+        
+    }
+
+    for(var k in counts){
+        output+=k+"\n"
+    }
+
+    return output
+
+}
+
+async function formatTowers(data){
+    var output = ""
+    var counts = {}
+    var hp = {}
+    for(var i = 0; i < data.length; i++){
+        if(data[i].team != "Not a Unit" && data[i].team != undefined){
+            var nameParts = data[i].name.split(".")
+            var tempName = data[i].team + " " + nameParts[2]
+            if(nameParts[1] == "building" && !isBuilding(nameParts[2])){
+                var tempName = data[i].team + " " + nameParts[2]+" ("+data[i].position.x+", "+data[i].position.z+")"
+                if(data[i].hitpoints < data[i].totalhp){
+                    tempName = data[i].team + " " + nameParts[2] + " (" + Math.floor((data[i].hitpoints / data[i].totalhp)*100) + "% hp)"
+                }
+                if(counts[tempName]){
+                    counts[tempName] += 1
+                }else{
+                    counts[tempName] = 1
+                }
+            }
+        }
+        //if(data[i].hitpoints < if(data[i].
+        
+    }
+
+    for(var k in counts){
+        output+=k+"\n"
+    }
+
+    return output
+
+}
+
 export function getCommandData(){
     var temp = {
     "getUnits": {
         "description":"Gets a list of all units.",
+        "args":""
+    },
+
+    "getBuildings": {
+        "description":"Gets a list of all buildings, including ids.",
+        "args":""
+    },
+    "getTowers": {
+        "description":"Gets a list of all towers, including their x and y position.",
         "args":""
     },
 
@@ -85,7 +174,29 @@ export async function getUnits(){
     var output = ""
     await getObjects().then((res)=> {
         //console.log(res)
-        formatObjects(res).then((finished) => {
+        formatUnits(res).then((finished) => {
+            output = finished
+        })
+    })
+    return defer(() => output)
+}
+
+export async function getBuildings(){
+    var output = ""
+    await getObjects().then((res)=> {
+        //console.log(res)
+        formatBuildings(res).then((finished) => {
+            output = finished
+        })
+    })
+    return defer(() => output)
+}
+
+export async function getTowers(){
+    var output = ""
+    await getObjects().then((res)=> {
+        //console.log(res)
+        formatTowers(res).then((finished) => {
             output = finished
         })
     })
