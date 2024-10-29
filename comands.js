@@ -153,6 +153,11 @@ export function getCommandData(){
         "args":"message"
     },
 
+    "pressJ": {
+        "description":"Don't press the J key. Do not ever go near the J key.",
+        "args":""
+    },
+
     /*
     "getResources": {
         "description":"Gets your current plastic and electricity.",
@@ -201,6 +206,10 @@ export async function getTowers(){
         })
     })
     return defer(() => output)
+}
+
+export async function pressJ(){
+    return "What you've just done can never be taken back."
 }
 
 function breakMessage(str) {

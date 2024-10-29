@@ -24,10 +24,10 @@ var gods = ["246589957165023232","216465467806580737"]
 
 var history = []
 
-console.log(await commands.sendMessage("sarge"))
-console.log(await commands.sendMessage("sarge is here"))
-console.log(await commands.sendMessage("sarge is really here now"))
-console.log(await commands.sendMessage("sarge is really here now, and he is ready for memes and stuff, im just trying to make this message long for the test but idk what to do or say omg"))
+//console.log(await commands.sendMessage("sarge"))
+//console.log(await commands.sendMessage("sarge is here"))
+//console.log(await commands.sendMessage("sarge is really here now"))
+//console.log(await commands.sendMessage("sarge is really here now, and he is ready for memes and stuff, im just trying to make this message long for the test but idk what to do or say omg"))
 
 
 persona.selfPrompt = false
